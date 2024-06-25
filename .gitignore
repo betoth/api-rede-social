@@ -1,0 +1,24 @@
+# Executáveis do Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Arquivos de configuração
+.env
+
+# Diretórios e arquivos do editor de código
+.vscode/
+.idea/
+*.swp
+*~
+
+# Diretórios de logs e arquivos de saída
+*.log
+*.out
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
