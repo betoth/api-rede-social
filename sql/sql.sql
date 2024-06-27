@@ -1,6 +1,3 @@
--- Conectar ao banco de dados padrão 'postgres' para criar o novo banco de dados
-\c postgres
-
 -- Criar o banco de dados 'social_network'
 CREATE DATABASE social_network;
 
@@ -16,5 +13,8 @@ CREATE TABLE users (
     name VARCHAR(50) NOT NULL,
     nick_name VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users TO golang;

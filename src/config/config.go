@@ -1,6 +1,7 @@
 package config
 
 import (
+	"api-rede-social/src/logs"
 	"fmt"
 	"log"
 	"os"
@@ -12,7 +13,9 @@ import (
 var (
 	//APIPort port of API
 	APIPort = 0
-	connStr = ""
+
+	//ConnStr Connection String
+	ConnStr = ""
 )
 
 // LoadEnv Loading all enviroment variables
@@ -31,23 +34,19 @@ func LoadEnv() {
 
 	APIPort, err = strconv.Atoi(os.Getenv("API_PORT"))
 	if err != nil {
-		log.Print(err)
-		log.SetPrefix("WARNING: ")
-		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 		APIPort = 5000
-		log.Printf("API port cannot be loaded from environment variables. Defined for %v", APIPort)
+		logs.Warning(err, fmt.Sprintf("API port cannot be loaded from environment variables. Defined for %v", APIPort))
+
 	}
 
 	dbPort, err := strconv.Atoi(dbPortStr)
 	if err != nil {
-		log.Print(err)
-		log.SetPrefix("WARNING: ")
-		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 		dbPort = 5432
-		log.Printf("DB port cannot be loaded from environment variables. Defined for %v", dbPort)
+		logs.Warning(err, fmt.Sprintf("DB port cannot be loaded from environment variables. Defined for %v", dbPort))
+
 	}
 
-	connStr = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+	ConnStr = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		dbHost,
 		dbPort,
 		dbUser,
