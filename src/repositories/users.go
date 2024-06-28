@@ -37,8 +37,8 @@ func (ur Users) Create(user models.User) (uint64, error) {
 	return lastInsertID, nil
 }
 
-// Search retuns all register equals to search conditions
-func (ur Users) Search(searchConditions string) ([]models.User, error) {
+// Find retuns all register equals to search conditions
+func (ur Users) Find(searchConditions string) ([]models.User, error) {
 
 	searchConditions = fmt.Sprintf("%%%s%%", searchConditions)
 
@@ -68,4 +68,47 @@ func (ur Users) Search(searchConditions string) ([]models.User, error) {
 	}
 
 	return users, nil
+}
+
+// FindByID returns an user search by id
+func (ur Users) FindByID(ID uint64) (models.User, error) {
+
+	row, err := ur.db.Query("SELECT id, name, nick_name, email, created_at FROM users WHERE id = $1", ID)
+	if err != nil {
+		return models.User{}, nil
+
+	}
+	defer row.Close()
+
+	var user models.User
+
+	if row.Next() {
+		if err := row.Scan(
+			&user.ID,
+			&user.Name,
+			&user.NickName,
+			&user.Email,
+			&user.CreatedAt,
+		); err != nil {
+			return models.User{}, nil
+		}
+		return user, nil
+	}
+	return models.User{}, fmt.Errorf("User not found")
+}
+
+func (ur Users) UpdateUser(ID uint64, user models.User) error {
+
+	statement, err := ur.db.Prepare("UPDATE users SET name=$1, nick_name=$2, email=$3 WHERE id = $4")
+	if err != nil {
+		return err
+
+	}
+	defer statement.Close()
+
+	if _, err := statement.Exec(user.Name, user.NickName, user.Email, ID); err != nil {
+		return err
+	}
+
+	return nil
 }

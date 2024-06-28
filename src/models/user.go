@@ -17,9 +17,9 @@ type User struct {
 }
 
 // Prepare apply validations and format user input
-func (user *User) Prepare() error {
+func (user *User) Prepare(step string) error {
 
-	if err := user.Validate(); err != nil {
+	if err := user.Validate(step); err != nil {
 		return err
 	}
 
@@ -28,7 +28,7 @@ func (user *User) Prepare() error {
 }
 
 // Validate apply validations in user input
-func (user *User) Validate() error {
+func (user *User) Validate(step string) error {
 
 	if user.Name == "" {
 		return errors.New("Name cannot be empty")
@@ -42,7 +42,7 @@ func (user *User) Validate() error {
 		return errors.New("Email cannot be empty")
 	}
 
-	if user.Password == "" {
+	if step == "create" && user.Password == "" {
 		return errors.New("Password cannot be empty")
 	}
 
