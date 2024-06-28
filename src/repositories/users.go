@@ -97,6 +97,7 @@ func (ur Users) FindByID(ID uint64) (models.User, error) {
 	return models.User{}, fmt.Errorf("User not found")
 }
 
+// UpdateUser update a user
 func (ur Users) UpdateUser(ID uint64, user models.User) error {
 
 	statement, err := ur.db.Prepare("UPDATE users SET name=$1, nick_name=$2, email=$3 WHERE id = $4")
@@ -107,6 +108,22 @@ func (ur Users) UpdateUser(ID uint64, user models.User) error {
 	defer statement.Close()
 
 	if _, err := statement.Exec(user.Name, user.NickName, user.Email, ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Delete delete a usar by id
+func (ur Users) Delete(ID uint64) error {
+
+	statement, err := ur.db.Prepare("DELETE FROM users where id = $1")
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	if _, err = statement.Exec(ID); err != nil {
 		return err
 	}
 
