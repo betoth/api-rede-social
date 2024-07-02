@@ -1,9 +1,12 @@
 package models
 
 import (
+	"api-rede-social/src/security"
 	"errors"
 	"strings"
 	"time"
+
+	"github.com/badoux/checkmail"
 )
 
 // User struct represent users
@@ -23,7 +26,10 @@ func (user *User) Prepare(step string) error {
 		return err
 	}
 
-	user.Format()
+	if err := user.Format(step); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -41,6 +47,9 @@ func (user *User) Validate(step string) error {
 	if user.Email == "" {
 		return errors.New("Email cannot be empty")
 	}
+	if err := checkmail.ValidateFormat(user.Email); err != nil {
+		return errors.New("Email with invalid format")
+	}
 
 	if step == "create" && user.Password == "" {
 		return errors.New("Password cannot be empty")
@@ -50,8 +59,18 @@ func (user *User) Validate(step string) error {
 }
 
 // Format remove spaces from user input
-func (user *User) Format() {
+func (user *User) Format(step string) error {
 	user.Name = strings.TrimSpace(user.Name)
 	user.NickName = strings.TrimSpace(user.NickName)
 	user.Email = strings.TrimSpace(user.Email)
+
+	if step == "create" {
+		passwordHash, err := security.Hash(user.Password)
+		if err != nil {
+			return err
+		}
+		user.Password = string(passwordHash)
+	}
+
+	return nil
 }

@@ -16,6 +16,8 @@ var (
 
 	//ConnStr Connection String
 	ConnStr = ""
+
+	SecretKey []byte
 )
 
 // LoadEnv Loading all enviroment variables
@@ -53,4 +55,5 @@ func LoadEnv() {
 		dbPassword,
 		dbName)
 
+	SecretKey = []byte(os.Getenv("SECRET_KEY"))
 }
