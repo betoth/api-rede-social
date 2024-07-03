@@ -36,4 +36,28 @@ var publicationRoutes = []Routes{
 		Function:               controllers.DeletePublication,
 		AuthenticationRequires: true,
 	},
+	{
+		URI:                    "/users/{id}/publications",
+		Method:                 http.MethodGet,
+		Function:               controllers.FindPublicationByUser,
+		AuthenticationRequires: true,
+	},
+	{
+		URI:                    "/publication",
+		Method:                 http.MethodPost,
+		Function:               controllers.CreatePublication,
+		AuthenticationRequires: true,
+	},
+	{
+		URI:                    "/publication/{id}/like/",
+		Method:                 http.MethodPost,
+		Function:               controllers.LikePublication,
+		AuthenticationRequires: true,
+	},
+	{
+		URI:                    "/publication/{id}/unlike/",
+		Method:                 http.MethodPost,
+		Function:               controllers.UnlikePublication,
+		AuthenticationRequires: true,
+	},
 }

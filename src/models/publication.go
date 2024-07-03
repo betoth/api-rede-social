@@ -12,7 +12,7 @@ type Publication struct {
 	Title          string    `json:"title,omitempty"`
 	Content        string    `json:"content,omitempty"`
 	AuthorID       uint64    `json:"author_id,omitempty"`
-	AuthorNickName uint64    `json:"author_nick_name,omitempty"`
+	AuthorNickName string    `json:"author_nick_name,omitempty"`
 	Likes          uint64    `json:"likes"`
 	CreatedAt      time.Time `json:"created_at,omitempty"`
 }
