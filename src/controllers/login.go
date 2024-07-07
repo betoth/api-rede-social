@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 // Login make users login
@@ -52,5 +53,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		response.ErrorJSON(w, http.StatusInternalServerError, err)
 		return
 	}
-	w.Write([]byte(token))
+
+	var LoginResponse models.AuthenticationData
+	LoginResponse.Token = token
+	LoginResponse.ID = strconv.FormatUint(DbUser.ID, 10)
+
+	response.JSON(w, http.StatusOK, LoginResponse)
+
 }
