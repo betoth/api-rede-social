@@ -76,8 +76,8 @@ func (p *Publications) FindPublications(userID uint64) ([]models.Publication, er
 		`select p.*, u.nick_name from publications p
 		inner join users u on p.author_id = u.id 
 		inner join followers f  on f.users_id = u.id 
-		where p.author_id = 69 or f.follower_id = $1
-		ORDER BY 1 DESC`, userID)
+		where p.author_id = $1 or f.follower_id = $2
+		ORDER BY 1 DESC`, userID, userID)
 	if err != nil {
 		return []models.Publication{}, err
 	}

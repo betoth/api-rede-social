@@ -39,7 +39,7 @@ func (ur *Users) Create(user models.User) (uint64, error) {
 func (ur *Users) Find(searchConditions string) ([]models.User, error) {
 	searchConditions = fmt.Sprintf("%%%s%%", searchConditions)
 
-	rows, err := ur.db.Query("SELECT id, name, nick_name, email, created_at FROM users WHERE name LIKE $1 OR nick_name LIKE $2", searchConditions, searchConditions)
+	rows, err := ur.db.Query("SELECT id, name, nick_name, email, created_at FROM users WHERE name ILIKE $1 OR nick_name ILIKE $2", searchConditions, searchConditions)
 	if err != nil {
 		return nil, err
 	}

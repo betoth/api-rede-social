@@ -49,13 +49,13 @@ var publicationRoutes = []Routes{
 		AuthenticationRequires: true,
 	},
 	{
-		URI:                    "/publication/{id}/like/",
+		URI:                    "/publication/{id}/like",
 		Method:                 http.MethodPost,
 		Function:               controllers.LikePublication,
 		AuthenticationRequires: true,
 	},
 	{
-		URI:                    "/publication/{id}/unlike/",
+		URI:                    "/publication/{id}/unlike",
 		Method:                 http.MethodPost,
 		Function:               controllers.UnlikePublication,
 		AuthenticationRequires: true,
